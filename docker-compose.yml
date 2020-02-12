@@ -2,7 +2,7 @@ version: '3'
 services:
     App:
         build:
-            dockerfile: /Users/mobile.mac01/Projetos/Desenv/python/Dockerfile
+            dockerfile: ./Dockerfile
             context: .
         image: yanvale/python:desenv
         container_name: App
