@@ -1,5 +1,4 @@
 #!/bin/bash  
-
 ########## Cria o serviço ############
 /usr/bin/curl -i -X POST \
   --url http://localhost:8001/services/ \
