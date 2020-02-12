@@ -27,5 +27,9 @@ Get na API para retornar Aplicação python Hello World
 
 docker exec -it api curl -i -X GET   --url http://localhost:8000/desafio
 
+ou 
+
+Abrir o Postman e dar um GET no endereço do Kong http://IPDOKONG:8000/desafio
+
 ####################################################################################################################################################################################
 
