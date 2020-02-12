@@ -34,6 +34,8 @@ services:
         restart: on-failure
         environment: 
             KONG_PG_HOST: postgres
+            KONG_DATABASE: postgres
+            KONG_PG_PASSWORD: kong
         links: 
             - postgres          
 ######## Kong Api Gateway ###################        
