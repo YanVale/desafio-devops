@@ -25,8 +25,7 @@ docker run exec api curl -i -X POST \
 Get na API para retornar Aplicação python Hello World
 
 docker run exec api curl -i -X GET \
-  --url http://localhost:8000/ \
-  --header 'Host: IPOUHOSTNAMEDOAPP:5000'
+  --url http://localhost:8000/desafio
 
 ####################################################################################################################################################################################
 
