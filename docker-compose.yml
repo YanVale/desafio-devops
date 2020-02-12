@@ -1,0 +1,51 @@
+version: '3'
+services:
+    App:
+        build:
+            dockerfile: /Users/mobile.mac01/Projetos/Desenv/python/Dockerfile-app
+            context: .
+        image: yanvale/python:desenv
+        container_name: App
+        ports:
+            - 5000:5000    
+    postgres:
+        image: postgres:9.6
+        container_name: postgres
+        ports:
+            - 5432:5432
+        networks: 
+            - kongnet    
+        environment:
+           POSTGRES_USER: kong
+           POSTGRES_DB: kong
+           POSTGRES_PASSWORD: kong
+        restart: always                        
+    api:
+        #build:
+            #dockerfile: /Users/mobile.mac01/Projetos/Desenv/python/Dockerfile-api
+            #context: .
+        image: kong:latest
+        #command: /bin/sh /usr/local/addroute.sh    
+        container_name: api
+        ports: 
+            - 8000:8000
+            - 8443:8443
+            - 8001:8001
+            - 8444:8444
+        networks: 
+            - kongnet
+        depends_on:
+            - postgres    
+        environment:
+           KONG_DATABASE: postgres
+           KONG_PG_HOST: postgres
+           KONG_PG_PASSWORD: kong
+           KONG_PROXY_ACCESS_LOG: /dev/stdout
+           KONG_ADMIN_ACCESS_LOG: /dev/stdout
+           KONG_PROXY_ERROR_LOG: /dev/stderr 
+           KONG_ADMIN_ERROR_LOG: /dev/stderr
+           KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+        restart: always
+networks:
+  kongnet:
+          

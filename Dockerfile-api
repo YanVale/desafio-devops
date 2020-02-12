@@ -1,0 +1,12 @@
+#Baixa imagem Kong ##
+FROM kong:latest
+COPY ./addroute.sh ./usr/local/
+
+
+
+
+
+
+
+
+
