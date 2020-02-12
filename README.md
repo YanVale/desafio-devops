@@ -20,6 +20,7 @@ Adicionar rota
 docker run exec api curl -i -X POST \
   --url http://localhost:8001/services/desafio/routes \
   --data 'hosts[]=IPOUHOSTNAMEDOAPP:5000'
+  --data 'paths=/desafio'
 
 
 Get na API para retornar Aplicação python Hello World
