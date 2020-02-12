@@ -2,12 +2,14 @@ version: '3'
 services:
     App:
         build:
-            dockerfile: /Users/mobile.mac01/Projetos/Desenv/python/Dockerfile-app
+            dockerfile: /Users/mobile.mac01/Projetos/Desenv/python/Dockerfile
             context: .
         image: yanvale/python:desenv
         container_name: App
         ports:
-            - 5000:5000    
+            - 5000:5000 
+        restart: always    
+############ Kong DB ######################               
     postgres:
         image: postgres:9.6
         container_name: postgres
@@ -19,11 +21,23 @@ services:
            POSTGRES_USER: kong
            POSTGRES_DB: kong
            POSTGRES_PASSWORD: kong
-        restart: always                        
+        restart: always 
+######### Kong Db MIgration ################        
+    kong-migration:
+        image: kong:latest
+        container_name: Kong-MIgration
+        command: "kong migrations bootstrap"  
+        networks:
+            - kongnet
+        depends_on: 
+            - postgres
+        restart: on-failure
+        environment: 
+            KONG_PG_HOST: postgres
+        links: 
+            - postgres          
+######## Kong Api Gateway ###################        
     api:
-        #build:
-            #dockerfile: /Users/mobile.mac01/Projetos/Desenv/python/Dockerfile-api
-            #context: .
         image: kong:latest
         #command: /bin/sh /usr/local/addroute.sh    
         container_name: api
@@ -35,7 +49,8 @@ services:
         networks: 
             - kongnet
         depends_on:
-            - postgres    
+            - postgres
+            - kong-migration    
         environment:
            KONG_DATABASE: postgres
            KONG_PG_HOST: postgres
@@ -45,6 +60,8 @@ services:
            KONG_PROXY_ERROR_LOG: /dev/stderr 
            KONG_ADMIN_ERROR_LOG: /dev/stderr
            KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+        #volumes:
+            #- /Users/mobile.mac01/Projetos/Desenv/python:/usr/local/   
         restart: always
 networks:
   kongnet:
